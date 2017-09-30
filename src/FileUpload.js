@@ -36,6 +36,7 @@ const FileUpload = React.createClass({
             timeout: PT.number,
             accept: PT.string,
             multiple: PT.bool,
+            method: PT.string,
             numberLimit: PT.oneOfType([PT.number, PT.func]),
             fileFieldName: PT.oneOfType([PT.string, PT.func]),
             withCredentials: PT.bool,
@@ -77,6 +78,7 @@ const FileUpload = React.createClass({
         this.timeout = (typeof options.timeout == 'number' && options.timeout > 0) ? options.timeout : 0     //超时时间
         this.accept = options.accept || ''  //限制文件后缀
         this.multiple = options.multiple || false
+        this.method = options.method || 'POST'
         this.numberLimit = options.numberLimit || false //允许多文件上传时，选择文件数量的限制
         this.fileFieldName = options.fileFieldName || false //文件附加到formData上时的key，传入string指定一个file的属性名，值为其属性的值。不支持IE
         this.withCredentials = options.withCredentials || false //跨域时是否使用认证信息
@@ -291,7 +293,7 @@ const FileUpload = React.createClass({
 
         /*AJAX上传部分*/
         const xhr = new XMLHttpRequest()
-        xhr.open('POST', targeturl, true)
+        xhr.open(this.method, targeturl, true)
 
         /*跨域是否开启验证信息*/
         xhr.withCredentials = this.withCredentials
